@@ -1,0 +1,8 @@
+# Dataset (arquivo muito grande para o GitHub)
+*.csv
+
+# macOS
+.DS_Store
+
+# Java compiled classes
+build/*.class
