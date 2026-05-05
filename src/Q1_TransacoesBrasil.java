@@ -50,7 +50,7 @@ public class Q1_TransacoesBrasil {
             String pais = campos[0].trim();
 
             if (pais.equals("Brazil")) {
-                con.write(new Text("Brazil"), new IntWritable(1));
+                con.write(new Text(pais), new IntWritable(1));
             }
         }
     }

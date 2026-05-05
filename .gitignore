@@ -4,5 +4,15 @@
 # macOS
 .DS_Store
 
-# Java compiled classes
-build/*.class
+# Java compiled classes / build output
+build/
+out/
+*.class
+*.jar
+
+# Hadoop intermediate
+**/_temporary/
+
+# IntelliJ — manter apenas a config de libraries
+.idea/*
+!.idea/libraries/

@@ -49,6 +49,6 @@ public class Q6_MinMaxWritable implements Writable {
 
     @Override
     public String toString() {
-        return "min=" + min + ", max=" + max;
+        return String.format("min=%.2f, max=%.2f", min, max);
     }
 }

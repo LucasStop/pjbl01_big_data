@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="hadoop">
+    <CLASSES>
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/common" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/common/lib" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/mapreduce" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/mapreduce/lib" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/hdfs" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/hdfs/lib" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/yarn" />
+      <root url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/yarn/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/common" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/common/lib" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/mapreduce" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/mapreduce/lib" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/hdfs" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/hdfs/lib" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/yarn" recursive="false" />
+    <jarDirectory url="file:///opt/homebrew/Cellar/hadoop/3.5.0/libexec/share/hadoop/yarn/lib" recursive="false" />
+  </library>
+</component>

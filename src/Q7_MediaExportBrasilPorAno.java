@@ -2,7 +2,6 @@ import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -33,7 +32,7 @@ public class Q7_MediaExportBrasilPorAno {
         j.setMapOutputValueClass(SumCountWritable.class);
 
         j.setOutputKeyClass(Text.class);
-        j.setOutputValueClass(DoubleWritable.class);
+        j.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(j, input);
         FileOutputFormat.setOutputPath(j, output);
@@ -82,7 +81,7 @@ public class Q7_MediaExportBrasilPorAno {
         }
     }
 
-    public static class Reduce extends Reducer<Text, SumCountWritable, Text, DoubleWritable> {
+    public static class Reduce extends Reducer<Text, SumCountWritable, Text, Text> {
         public void reduce(Text key, Iterable<SumCountWritable> values, Context con)
                 throws IOException, InterruptedException {
             double somaTotal = 0.0;
@@ -94,7 +93,7 @@ public class Q7_MediaExportBrasilPorAno {
             }
 
             double media = contTotal > 0 ? somaTotal / contTotal : 0.0;
-            con.write(key, new DoubleWritable(media));
+            con.write(key, new Text(String.format("%.2f", media)));
         }
     }
 }
