@@ -1,6 +1,11 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
@@ -70,14 +75,14 @@ public class RunAll {
 
         long inicio = System.currentTimeMillis();
 
-        executar(1, "Transacoes Brasil",          () -> runQ1(conf, input, outputBase + "/q1"));
-        executar(2, "Transacoes por ano",         () -> runQ2(conf, input, outputBase + "/q2"));
-        executar(3, "Transacoes por categoria",   () -> runQ3(conf, input, outputBase + "/q3"));
-        executar(4, "Transacoes por fluxo",       () -> runQ4(conf, input, outputBase + "/q4"));
-        executar(5, "Media Brasil por ano",       () -> runQ5(conf, input, outputBase + "/q5"));
-        executar(6, "MinMax Brasil 2016",         () -> runQ6(conf, input, outputBase + "/q6"));
-        executar(7, "Media Export Brasil/ano",    () -> runQ7(conf, input, outputBase + "/q7"));
-        executar(8, "MinMax amount por ano/pais", () -> runQ8(conf, input, outputBase + "/q8"));
+        executar(fs, outputBase, 1, "Transacoes Brasil",          out -> runQ1(conf, input, out));
+        executar(fs, outputBase, 2, "Transacoes por ano",         out -> runQ2(conf, input, out));
+        executar(fs, outputBase, 3, "Transacoes por categoria",   out -> runQ3(conf, input, out));
+        executar(fs, outputBase, 4, "Transacoes por fluxo",       out -> runQ4(conf, input, out));
+        executar(fs, outputBase, 5, "Media Brasil por ano",       out -> runQ5(conf, input, out));
+        executar(fs, outputBase, 6, "MinMax Brasil 2016",         out -> runQ6(conf, input, out));
+        executar(fs, outputBase, 7, "Media Export Brasil/ano",    out -> runQ7(conf, input, out));
+        executar(fs, outputBase, 8, "MinMax amount por ano/pais", out -> runQ8(conf, input, out));
 
         long fim = System.currentTimeMillis();
 
@@ -207,14 +212,32 @@ public class RunAll {
 
     @FunctionalInterface
     private interface JobRunnable {
-        void run() throws Exception;
+        void run(String outputDir) throws Exception;
     }
 
-    private static void executar(int n, String nome, JobRunnable r) throws Exception {
+    private static void executar(FileSystem fs, String outputBase, int n, String nome, JobRunnable r) throws Exception {
+        String dir = outputBase + "/q" + n;
+        String txt = outputBase + "/q" + n + "_resultado.txt";
         System.out.printf("%n==> [%d/8] Executando: %s%n", n, nome);
         long t0 = System.currentTimeMillis();
-        r.run();
-        System.out.printf("    OK em %.1fs%n", (System.currentTimeMillis() - t0) / 1000.0);
+        r.run(dir);
+        copiarResultado(fs, dir, txt);
+        System.out.printf("    OK em %.1fs  ->  %s%n", (System.currentTimeMillis() - t0) / 1000.0, txt);
+    }
+
+    private static void copiarResultado(FileSystem fs, String dir, String destTxt) throws Exception {
+        Path src = new Path(dir + "/part-r-00000");
+        if (!fs.exists(src)) return;
+        // Le via Hadoop FS, escreve via Java NIO puro para evitar arquivos .crc
+        java.nio.file.Path dst = Paths.get(destTxt);
+        try (InputStream in = fs.open(src);
+             OutputStream out = Files.newOutputStream(dst,
+                     StandardOpenOption.CREATE,
+                     StandardOpenOption.TRUNCATE_EXISTING)) {
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+        }
     }
 
     // ---------- Auto-detecção do CSV ----------
